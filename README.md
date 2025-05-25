@@ -6,6 +6,5 @@
 
 ## To-do:
 
-- [ ] Auto-Zoom
 - [ ] Am Wochendende für Montag
-- [ ] Option to fullscreen
+- [ ] About page

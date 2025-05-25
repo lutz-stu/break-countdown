@@ -19,6 +19,14 @@
                 overflow: hidden;
                 color: #fff; /* Make all text white by default */
             }
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                overscroll-behavior: none;
+                touch-action: none;
+            }
             .parent {
                 display: flex;
                 justify-content: center; /* Horizontal center */
@@ -67,12 +75,14 @@
                 position: relative;
                 top: 0.05em;
             }
+
+            .hide {
+                display: none !important;
+            }
         </style>
     </head>
     <body>
-        <button id="fullscreen-btn" title="Vollbildmodus">
-            ⛶
-        </button>
+        <button id="fullscreen-btn" title="Vollbildmodus">⛶</button>
         <div class="parent">
             <div style="text-align: center">
                 <h2 id="info" class="subtitle"></h2>
@@ -219,22 +229,10 @@
                     elem.msRequestFullscreen();
                 }
             }
-            function exitFullscreen() {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                    document.mozCancelFullScreen();
-                } else if (document.msExitFullscreen) {
-                    document.msExitFullscreen();
-                }
-            }
             btn.addEventListener('click', function () {
-                requestFullscreen(document.documentElement);
+                // Use body for better iPad compatibility
+                requestFullscreen(document.body);
             });
-
-            // Hide button when in fullscreen, show when not
             function updateFullscreenBtn() {
                 if (isFullscreen()) {
                     btn.classList.add('hide');
@@ -246,6 +244,8 @@
             document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
             document.addEventListener('mozfullscreenchange', updateFullscreenBtn);
             document.addEventListener('MSFullscreenChange', updateFullscreenBtn);
+            // Initial check
+            updateFullscreenBtn();
         </script>
     </body>
 </html>

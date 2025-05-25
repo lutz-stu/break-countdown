@@ -4,24 +4,21 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Pausencountdown</title>
-
         <!-- Using Bulma Framework -->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
         />
-
         <style>
             html {
                 background-color: #000000;
             }
-
             body {
                 margin: 0;
                 padding: 0;
                 overflow: hidden;
+                color: #fff; /* Make all text white by default */
             }
-
             .parent {
                 display: flex;
                 justify-content: center; /* Horizontal center */
@@ -29,17 +26,16 @@
                 height: 100vh; /* Full viewport height */
                 width: 100vw; /* Full viewport width */
             }
-
-            /*
-            .parent > div {
-                zoom: 200%;
-            }
-            */
-            
             .countdown {
-                font-size: 2.5rem; /* Large font for countdown */
-                font-weight: bold; /* Bold font */
-                margin-top: 1rem; /* Margin at the top */
+                font-size: 15vw; /* Responsive large font for countdown */
+                font-weight: bold;
+                margin-top: 1rem;
+                color: #fff; /* Ensure countdown is white */
+            }
+            #info {
+                font-size: 5vw; /* Responsive font for info */
+                color: #ffffffb9; /* info a bit grey- */
+                white-space: nowrap;
             }
         </style>
     </head>

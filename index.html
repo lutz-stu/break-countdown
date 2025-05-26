@@ -19,7 +19,8 @@
                 overflow: hidden;
                 color: #fff; /* Make all text white by default */
             }
-            html, body {
+            html,
+            body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
@@ -95,50 +96,46 @@
             }
 
             function getNextTarget(now) {
+
                 // Time windows and target times
                 const today = new Date(
                     now.getFullYear(),
                     now.getMonth(),
                     now.getDate()
                 );
+
                 const times = [
                     {
                         windowStart: new Date(today.getTime()), // 00:00
                         windowEnd: new Date(
-                            today.getTime() +
-                                8 * 60 * 60 * 1000 +
-                                20 * 60 * 1000
+                            today.getTime() + (8 * 60 + 20) * 60 * 1000
                         ), // 08:20
                         target: new Date(
-                            today.getTime() + 8 * 60 * 60 * 1000 + 5 * 60 * 1000
+                            today.getTime() + (8 * 60 + 5) * 60 * 1000
                         ), // 08:05
                         label: "Schulbeginn 08:05 Uhr",
                     },
                     {
                         windowStart: new Date(
-                            today.getTime() +
-                                8 * 60 * 60 * 1000 +
-                                20 * 60 * 1000
+                            today.getTime() + (8 * 60 + 20) * 60 * 1000
                         ), // 08:20
                         windowEnd: new Date(
-                            today.getTime() +
-                                10 * 60 * 60 * 1000 +
-                                20 * 60 * 1000
+                            today.getTime() + (10 * 60 + 20) * 60 * 1000
                         ), // 10:20
                         target: new Date(
-                            today.getTime() + 9 * 60 * 60 + 55 * 60 * 1000
+                            today.getTime() + (9 * 60 + 55) * 60 * 1000
                         ), // 09:55
                         label: "Pausenende 09:55 Uhr",
                     },
                     {
                         windowStart: new Date(
-                            today.getTime() + 10 * 60 * 60 + 20 * 60 * 1000
+                            today.getTime() + (10 * 60 + 20) * 60 * 1000
                         ), // 10:20
                         windowEnd: new Date(
                             today.getTime() + 12 * 60 * 60 * 1000
                         ), // 12:00
                         target: new Date(
-                            today.getTime() + 11 * 60 * 60 + 45 * 60 * 1000
+                            today.getTime() + (11 * 60 + 45) * 60 * 1000
                         ), // 11:45
                         label: "Pausenende 11:45 Uhr",
                     },
@@ -147,14 +144,14 @@
                             today.getTime() + 12 * 60 * 60 * 1000
                         ), // 12:00
                         windowEnd: new Date(
-                            today.getTime() + 14 * 60 * 60 + 15 * 60 * 1000
+                            today.getTime() + (14 * 60 + 15) * 60 * 1000
                         ), // 14:15
                         target: new Date(today.getTime() + 14 * 60 * 60 * 1000), // 14:00
                         label: "Pausenende 14:00 Uhr",
                     },
                     {
                         windowStart: new Date(
-                            today.getTime() + 14 * 60 * 60 + 15 * 60 * 1000
+                            today.getTime() + (14 * 60 + 15) * 60 * 1000
                         ), // 14:15
                         windowEnd: new Date(
                             today.getTime() + 24 * 60 * 60 * 1000
@@ -162,8 +159,7 @@
                         target: new Date(
                             today.getTime() +
                                 24 * 60 * 60 * 1000 +
-                                8 * 60 * 60 * 1000 +
-                                5 * 60 * 1000
+                                (8 * 60 + 5) * 60 * 1000
                         ), // 08:05 next day
                         label: "Schulbeginn Morgen 08:05 Uhr",
                     },
@@ -209,7 +205,7 @@
             updateCountdown();
 
             // Fullscreen logic
-            const btn = document.getElementById('fullscreen-btn');
+            const btn = document.getElementById("fullscreen-btn");
             function isFullscreen() {
                 return (
                     document.fullscreenElement ||
@@ -229,21 +225,30 @@
                     elem.msRequestFullscreen();
                 }
             }
-            btn.addEventListener('click', function () {
+            btn.addEventListener("click", function () {
                 // Use body for better iPad compatibility
                 requestFullscreen(document.body);
             });
             function updateFullscreenBtn() {
                 if (isFullscreen()) {
-                    btn.classList.add('hide');
+                    btn.classList.add("hide");
                 } else {
-                    btn.classList.remove('hide');
+                    btn.classList.remove("hide");
                 }
             }
-            document.addEventListener('fullscreenchange', updateFullscreenBtn);
-            document.addEventListener('webkitfullscreenchange', updateFullscreenBtn);
-            document.addEventListener('mozfullscreenchange', updateFullscreenBtn);
-            document.addEventListener('MSFullscreenChange', updateFullscreenBtn);
+            document.addEventListener("fullscreenchange", updateFullscreenBtn);
+            document.addEventListener(
+                "webkitfullscreenchange",
+                updateFullscreenBtn
+            );
+            document.addEventListener(
+                "mozfullscreenchange",
+                updateFullscreenBtn
+            );
+            document.addEventListener(
+                "MSFullscreenChange",
+                updateFullscreenBtn
+            );
             // Initial check
             updateFullscreenBtn();
         </script>

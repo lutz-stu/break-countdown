@@ -36,7 +36,7 @@
                 width: 100vw; /* Full viewport width */
             }
             .countdown {
-                font-size: 15vw; /* Responsive large font for countdown */
+                font-size: 30vw; /* Responsive large font for countdown */
                 font-weight: bold;
                 margin-top: 1rem;
                 color: #fff; /* Ensure countdown is white */
@@ -183,21 +183,22 @@
 
                 let absDiff = Math.abs(diff);
                 let hours = Math.floor(absDiff / (1000 * 60 * 60));
-                let minutes = Math.floor(
-                    (absDiff % (1000 * 60 * 60)) / (1000 * 60)
-                );
+                let minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
                 let seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
+
+                let timeString;
+                if (hours > 0) {
+                    timeString = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+                } else {
+                    timeString = `${pad(minutes)}:${pad(seconds)}`;
+                }
 
                 if (diff >= 0) {
                     info.textContent = t.label;
-                    countdown.textContent = `${pad(hours)}:${pad(
-                        minutes
-                    )}:${pad(seconds)}`;
+                    countdown.textContent = timeString;
                 } else {
                     info.textContent = t.label + " (vergangen)";
-                    countdown.textContent = `-${pad(hours)}:${pad(
-                        minutes
-                    )}:${pad(seconds)}`;
+                    countdown.textContent = `-${timeString}`;
                 }
             }
 

@@ -188,8 +188,10 @@
 
                 let timeString;
                 if (hours > 0) {
-                    timeString = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+                    // Show only hours and minutes if hours > 0
+                    timeString = `${pad(hours)}:${pad(minutes)}`;
                 } else {
+                    // Show minutes and seconds if hours == 0
                     timeString = `${pad(minutes)}:${pad(seconds)}`;
                 }
 

@@ -35,6 +35,10 @@
                 align-items: center; /* Vertical center */
                 height: 100vh; /* Full viewport height */
                 width: 100vw; /* Full viewport width */
+                background-color: #000000; /* Black background for browser */
+            }
+            .transparent-mode .parent {
+                background-color: transparent !important; /* Transparent for OBS */
             }
             .countdown {
                 font-size: 30vw; /* Responsive large font for countdown */
@@ -84,6 +88,13 @@
         </style>
     </head>
     <body>
+        <script>
+            // Check for transparent mode parameter (for OBS)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('transparent') === 'true' || urlParams.get('obs') === 'true') {
+                document.body.classList.add('transparent-mode');
+            }
+        </script>
         <button id="fullscreen-btn" title="Vollbildmodus">⛶</button>
         <div class="parent">
             <div style="text-align: center">

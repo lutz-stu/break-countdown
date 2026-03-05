@@ -37,8 +37,11 @@
                 width: 100vw; /* Full viewport width */
                 background-color: #000000; /* Black background for browser */
             }
-            .transparent-mode .parent {
+            .embedded-mode .parent {
                 background-color: transparent !important; /* Transparent for OBS */
+            }
+            .embedded-mode #fullscreen-btn {
+                display: none !important; /* Hide fullscreen button in embedded mode */
             }
             .countdown {
                 font-size: 30vw; /* Responsive large font for countdown */
@@ -89,10 +92,10 @@
     </head>
     <body>
         <script>
-            // Check for transparent mode parameter (for OBS)
+            // Check for embedded mode via URL parameter (for OBS, etc.)
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('transparent') === 'true' || urlParams.get('obs') === 'true') {
-                document.body.classList.add('transparent-mode');
+            if (urlParams.get('embedded') === 'true') {
+                document.body.classList.add('embedded-mode');
             }
         </script>
         <button id="fullscreen-btn" title="Vollbildmodus">⛶</button>

@@ -3,7 +3,7 @@ let SCHEDULE = [];
 // Load config.json on page load
 async function loadConfig() {
   try {
-    const response = await fetch('config.json');
+    const response = await fetch('config.json', { cache: 'no-store' });
     const data = await response.json();
     SCHEDULE = data.schedule;
     updateCountdown(); // Start countdown after config loaded

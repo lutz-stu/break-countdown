@@ -1,0 +1,58 @@
+{
+  "schedule": [
+    {
+      "windowStart": "00:00",
+      "windowEnd": "08:10",
+      "target": "08:05",
+      "label": "Schulbeginn 08:05 Uhr"
+    },
+    {
+      "windowStart": "08:10",
+      "windowEnd": "09:35",
+      "target": "09:35",
+      "label": "Pausenbeginn 09:35 Uhr"
+    },
+    {
+      "windowStart": "09:35",
+      "windowEnd": "10:00",
+      "target": "09:55",
+      "label": "Pausenende 09:55 Uhr"
+    },
+    {
+      "windowStart": "10:00",
+      "windowEnd": "11:25",
+      "target": "11:25",
+      "label": "Pausenbeginn 11:25 Uhr"
+    },
+    {
+      "windowStart": "11:25",
+      "windowEnd": "11:50",
+      "target": "11:45",
+      "label": "Pausenende 11:45 Uhr"
+    },
+    {
+      "windowStart": "11:50",
+      "windowEnd": "13:15",
+      "target": "13:15",
+      "label": "Pausenbeginn 13:15 Uhr"
+    },
+    {
+      "windowStart": "13:15",
+      "windowEnd": "14:05",
+      "target": "14:00",
+      "label": "Pausenende 14:00 Uhr"
+    },
+    {
+      "windowStart": "14:05",
+      "windowEnd": "15:30",
+      "target": "15:30",
+      "label": "Pausenbeginn 15:30 Uhr"
+    },
+    {
+      "windowStart": "15:30",
+      "windowEnd": "24:00",
+      "target": "next-day:08:05",
+      "label": "Schulbeginn Morgen 08:05 Uhr"
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+html {
+    background-color: transparent;
+}
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #fff; /* Make all text white by default */
+    background-color: transparent;
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+}
+.parent {
+    display: flex;
+    justify-content: center; /* Horizontal center */
+    align-items: center; /* Vertical center */
+    height: 100vh; /* Full viewport height */
+    width: 100vw; /* Full viewport width */
+    background-color: #000000; /* Black background for browser */
+}
+.embedded-mode .parent {
+    background-color: transparent !important; /* Transparent for OBS */
+}
+.embedded-mode #fullscreen-btn {
+    display: none !important; /* Hide fullscreen button in embedded mode */
+}
+.countdown {
+    font-size: 30vw; /* Responsive large font for countdown */
+    font-weight: bold;
+    margin-top: 1rem;
+    color: #fff; /* Ensure countdown is white */
+}
+#info {
+    font-size: 5vw; /* Responsive font for info */
+    color: #ffffffb9; /* info a bit grey- */
+    white-space: nowrap;
+}
+#fullscreen-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+    line-height: 1; /* Add this line */
+}
+
+#fullscreen-btn span {
+    display: inline-block;
+    line-height: 1;
+    vertical-align: middle;
+    /* Optional: fine-tune vertical position */
+    position: relative;
+    top: 0.05em;
+}
+
+.hide {
+    display: none !important;
+}

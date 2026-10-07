@@ -1,324 +1,42 @@
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Pausencountdown</title>
-        <!-- Using Bulma Framework -->
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
-        />
-        <style>
-            html {
-                background-color: transparent;
-            }
-            body {
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                color: #fff; /* Make all text white by default */
-                background-color: transparent;
-            }
-            html,
-            body {
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                overflow: hidden;
-                overscroll-behavior: none;
-                touch-action: none;
-            }
-            .parent {
-                display: flex;
-                justify-content: center; /* Horizontal center */
-                align-items: center; /* Vertical center */
-                height: 100vh; /* Full viewport height */
-                width: 100vw; /* Full viewport width */
-                background-color: #000000; /* Black background for browser */
-            }
-            .embedded-mode .parent {
-                background-color: transparent !important; /* Transparent for OBS */
-            }
-            .embedded-mode #fullscreen-btn {
-                display: none !important; /* Hide fullscreen button in embedded mode */
-            }
-            .countdown {
-                font-size: 30vw; /* Responsive large font for countdown */
-                font-weight: bold;
-                margin-top: 1rem;
-                color: #fff; /* Ensure countdown is white */
-            }
-            #info {
-                font-size: 5vw; /* Responsive font for info */
-                color: #ffffffb9; /* info a bit grey- */
-                white-space: nowrap;
-            }
-            #fullscreen-btn {
-                position: fixed;
-                top: 1rem;
-                right: 1rem;
-                z-index: 1000;
-                background: #222;
-                color: #fff;
-                border: none;
-                border-radius: 50%;
-                width: 3rem;
-                height: 3rem;
-                font-size: 1.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                opacity: 0.7;
-                transition: opacity 0.2s;
-                padding: 0;
-                line-height: 1; /* Add this line */
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pausencountdown</title>
+    <!-- Using Bulma Framework -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <script>
+      // Check for embedded mode via URL parameter (for OBS, etc.)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('embedded') === 'true') {
+        document.body.classList.add('embedded-mode');
+      }
+    </script>
 
-            #fullscreen-btn span {
-                display: inline-block;
-                line-height: 1;
-                vertical-align: middle;
-                /* Optional: fine-tune vertical position */
-                position: relative;
-                top: 0.05em;
-            }
+    <button id="fullscreen-btn" title="Vollbildmodus">⛶</button>
+    <div class="parent">
+      <div style="text-align: center">
+        <h2 id="info" class="subtitle"></h2>
+        <h1 id="countdown" class="title countdown"></h1>
+      </div>
+    </div>
 
-            .hide {
-                display: none !important;
-            }
-        </style>
-    </head>
-    <body>
-        <script>
-            // Check for embedded mode via URL parameter (for OBS, etc.)
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('embedded') === 'true') {
-                document.body.classList.add('embedded-mode');
-            }
-        </script>
-        <button id="fullscreen-btn" title="Vollbildmodus">⛶</button>
-        <div class="parent">
-            <div style="text-align: center">
-                <h2 id="info" class="subtitle"></h2>
-                <h1 id="countdown" class="title countdown"></h1>
-            </div>
-        </div>
-        <script>
-            function pad(n) {
-                return n < 10 ? "0" + n : n;
-            }
-
-            function getNextTarget(now) {
-
-                // Time windows and target times
-                const today = new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate()
-                );
-
-                const times = [
-                    {
-                        windowStart: new Date(today.getTime()), // 00:00
-                        windowEnd: new Date(
-                            today.getTime() + (8 * 60 + 20) * 60 * 1000
-                        ), // 08:20
-                        target: new Date(
-                            today.getTime() + (8 * 60 + 5) * 60 * 1000
-                        ), // 08:05
-                        label: "Schulbeginn 08:05 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (8 * 60 + 20) * 60 * 1000
-                        ), // 08:20
-                        windowEnd: new Date(
-                            today.getTime() + (9 * 60 + 35) * 60 * 1000
-                        ), // 09:35
-                        target: new Date(
-                            today.getTime() + (9 * 60 + 35) * 60 * 1000
-                        ), // 09:35
-                        label: "Pausenbeginn 09:35 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (9 * 60 + 35) * 60 * 1000
-                        ), // 09:35
-                        windowEnd: new Date(
-                            today.getTime() + (9 * 60 + 55) * 60 * 1000
-                        ), // 09:55
-                        target: new Date(
-                            today.getTime() + (9 * 60 + 55) * 60 * 1000
-                        ), // 09:55
-                        label: "Pausenende 09:55 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (9 * 60 + 55) * 60 * 1000
-                        ), // 09:55
-                        windowEnd: new Date(
-                            today.getTime() + (11 * 60 + 25) * 60 * 1000
-                        ), // 11:25
-                        target: new Date(
-                            today.getTime() + (11 * 60 + 25) * 60 * 1000
-                        ), // 11:25
-                        label: "Pausenbeginn 11:25 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (11 * 60 + 25) * 60 * 1000
-                        ), // 11:25
-                        windowEnd: new Date(
-                            today.getTime() + (11 * 60 + 45) * 60 * 1000
-                        ), // 11:45
-                        target: new Date(
-                            today.getTime() + (11 * 60 + 45) * 60 * 1000
-                        ), // 11:45
-                        label: "Pausenende 11:45 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (11 * 60 + 45) * 60 * 1000
-                        ), // 11:45
-                        windowEnd: new Date(
-                            today.getTime() + (13 * 60 + 15) * 60 * 1000
-                        ), // 13:15
-                        target: new Date(
-                            today.getTime() + (13 * 60 + 15) * 60 * 1000
-                        ), // 13:15
-                        label: "Pausenbeginn 13:15 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (13 * 60 + 15) * 60 * 1000
-                        ), // 13:15
-                        windowEnd: new Date(
-                            today.getTime() + 14 * 60 * 60 * 1000
-                        ), // 14:00
-                        target: new Date(
-                            today.getTime() + 14 * 60 * 60 * 1000
-                        ), // 14:00
-                        label: "Pausenende 14:00 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + 14 * 60 * 60 * 1000
-                        ), // 14:00
-                        windowEnd: new Date(
-                            today.getTime() + (15 * 60 + 30) * 60 * 1000
-                        ), // 15:30
-                        target: new Date(
-                            today.getTime() + (15 * 60 + 30) * 60 * 1000
-                        ), // 15:30
-                        label: "Pausenbeginn 15:30 Uhr",
-                    },
-                    {
-                        windowStart: new Date(
-                            today.getTime() + (15 * 60 + 30) * 60 * 1000
-                        ), // 15:30
-                        windowEnd: new Date(
-                            today.getTime() + 24 * 60 * 60 * 1000
-                        ), // 24:00
-                        target: new Date(
-                            today.getTime() +
-                                24 * 60 * 60 * 1000 +
-                                (8 * 60 + 5) * 60 * 1000
-                        ), // 08:05 next day
-                        label: "Schulbeginn Morgen 08:05 Uhr",
-                    },
-                ];
-
-                for (let t of times) {
-                    if (now >= t.windowStart && now < t.windowEnd) {
-                        return t;
-                    }
-                }
-                // If after 24:00, show next day's first window
-                return times[0];
-            }
-
-            function updateCountdown() {
-                const now = new Date();
-                const t = getNextTarget(now);
-                const diff = t.target - now;
-                const info = document.getElementById("info");
-                const countdown = document.getElementById("countdown");
-
-                let absDiff = Math.abs(diff);
-                let hours = Math.floor(absDiff / (1000 * 60 * 60));
-                let minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
-
-                let timeString;
-                if (hours > 0) {
-                    // Show only hours and minutes if hours > 0
-                    timeString = `${pad(hours)}:${pad(minutes)}`;
-                } else {
-                    // Show minutes and seconds if hours == 0
-                    timeString = `${pad(minutes)}:${pad(seconds)}`;
-                }
-
-                if (diff >= 0) {
-                    info.textContent = t.label;
-                    countdown.textContent = timeString;
-                } else {
-                    info.textContent = t.label + " (vergangen)";
-                    countdown.textContent = `-${timeString}`;
-                }
-            }
-
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
-
-            // Fullscreen logic
-            const btn = document.getElementById("fullscreen-btn");
-            function isFullscreen() {
-                return (
-                    document.fullscreenElement ||
-                    document.webkitFullscreenElement ||
-                    document.mozFullScreenElement ||
-                    document.msFullscreenElement
-                );
-            }
-            function requestFullscreen(elem) {
-                if (elem.requestFullscreen) {
-                    elem.requestFullscreen();
-                } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen();
-                } else if (elem.mozRequestFullScreen) {
-                    elem.mozRequestFullScreen();
-                } else if (elem.msRequestFullscreen) {
-                    elem.msRequestFullscreen();
-                }
-            }
-            btn.addEventListener("click", function () {
-                // Use body for better iPad compatibility
-                requestFullscreen(document.body);
-            });
-            function updateFullscreenBtn() {
-                if (isFullscreen()) {
-                    btn.classList.add("hide");
-                } else {
-                    btn.classList.remove("hide");
-                }
-            }
-            document.addEventListener("fullscreenchange", updateFullscreenBtn);
-            document.addEventListener(
-                "webkitfullscreenchange",
-                updateFullscreenBtn
-            );
-            document.addEventListener(
-                "mozfullscreenchange",
-                updateFullscreenBtn
-            );
-            document.addEventListener(
-                "MSFullscreenChange",
-                updateFullscreenBtn
-            );
-            // Initial check
-            updateFullscreenBtn();
-        </script>
-    </body>
+    <!-- Scripts in correct load order -->
+    <script src="js/config-loader.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/fullscreen.js"></script>
+    <script>
+      // Initialize app after all scripts are loaded
+      loadConfig();
+      startCountdown();
+    </script>
+  </body>
 </html>

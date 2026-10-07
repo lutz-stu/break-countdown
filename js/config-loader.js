@@ -1,4 +1,5 @@
 let SCHEDULE = [];
+let midnightReloadTimeoutId = null;
 
 function getDateKey(date) {
   const year = date.getFullYear();
@@ -7,8 +8,24 @@ function getDateKey(date) {
   return `${year}-${month}-${day}`;
 }
 
+function scheduleMidnightReload() {
+  if (midnightReloadTimeoutId) {
+    clearTimeout(midnightReloadTimeoutId);
+  }
+
+  const now = new Date();
+  const nextMidnight = new Date(now);
+  nextMidnight.setHours(24, 0, 0, 0);
+  const delay = nextMidnight.getTime() - now.getTime();
+
+  midnightReloadTimeoutId = setTimeout(() => {
+    window.location.reload();
+  }, delay);
+}
+
 // Load the alternate schedule only on its explicitly configured dates.
 async function loadConfig() {
+  scheduleMidnightReload();
   try {
     const [configResponse, altConfigResponse] = await Promise.all([
       fetch('config.json', { cache: 'no-store' }),

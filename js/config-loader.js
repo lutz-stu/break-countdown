@@ -1,14 +1,28 @@
 let SCHEDULE = [];
 
-// Load config.json on page load
+function getDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Load the alternate schedule only on its explicitly configured dates.
 async function loadConfig() {
   try {
-    const response = await fetch('config.json', { cache: 'no-store' });
-    const data = await response.json();
-    SCHEDULE = data.schedule;
+    const [configResponse, altConfigResponse] = await Promise.all([
+      fetch('config.json', { cache: 'no-store' }),
+      fetch('alt_config.json', { cache: 'no-store' })
+    ]);
+    const config = await configResponse.json();
+    const altConfig = await altConfigResponse.json();
+    const today = getDateKey(new Date());
+    SCHEDULE = altConfig.dates.includes(today)
+      ? altConfig.schedule
+      : config.schedule;
     updateCountdown(); // Start countdown after config loaded
   } catch (error) {
-    console.error('Failed to load config.json:', error);
+    console.error('Failed to load schedule configuration:', error);
     document.getElementById('info').textContent = 'Error loading config';
     document.getElementById('countdown').textContent = '---';
   }

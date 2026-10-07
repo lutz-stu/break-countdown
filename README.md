@@ -35,7 +35,7 @@ http://pausencountdown.netlify.app/index.html?embedded=true
 
 ## Configure the schedule
 
-The schedule is loaded from [`config.json`](config.json), so times can be changed without modifying the countdown logic.
+The regular schedule is loaded from [`config.json`](config.json). On dates listed in [`alt_config.json`](alt_config.json), the alternate schedule is used instead. Dates must use the exact `YYYY-MM-DD` format and are interpreted in the browser's local timezone.
 Times use the `HH:MM` format;
 prefix a target with `next-day:` to reference the following day.
 
@@ -52,12 +52,22 @@ prefix a target with `next-day:` to reference the following day.
 `target` is the time being counted down to. 
 Keep entries in chronological order without gaps.
 
+The alternate configuration must include a `dates` array containing every exact date on which it applies:
+
+```json
+{
+  "dates": ["2026-10-07", "2026-10-14"],
+  "schedule": []
+}
+```
+
 ## Project structure
 
 ```text
 .
 ├── index.html              # HTML entry point
 ├── config.json             # Schedule and label configuration
+├── alt_config.json         # Date-specific alternate schedule
 ├── css/
 │   └── style.css           # Layout and styling
 └── js/

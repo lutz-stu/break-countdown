@@ -44,12 +44,12 @@
     },
     {
       "windowStart": "14:05",
-      "windowEnd": "15:30",
+      "windowEnd": "15:35",
       "target": "15:30",
       "label": "Pausenbeginn 15:30 Uhr"
     },
     {
-      "windowStart": "15:30",
+      "windowStart": "15:35",
       "windowEnd": "24:00",
       "target": "next-day:08:05",
       "label": "Schulbeginn Morgen 08:05 Uhr"
